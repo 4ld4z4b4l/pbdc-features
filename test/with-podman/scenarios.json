@@ -5,7 +5,7 @@
       "with-base": {},
       "podman": {},
       "podman-in-podman": {},
-      "poop": {},
+      "podman-outside-of-podman": {},
       "with-podman": {}
     },
     "containerEnv": {

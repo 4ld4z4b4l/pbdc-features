@@ -1,0 +1,23 @@
+{
+  "id": "podman-outside-of-podman",
+  "version": "0.1.0",
+  "legacyIds": [
+    "poop"
+  ],
+  "name": "Podman outside of Podman (poop)",
+  "description": "Wires podman to the host's rootless podman socket (podman-outside-of-podman), parallel to docker-outside-of-docker. Mounts the host socket at /root/.poop/poop and exposes it as CONTAINER_HOST. The socket source defaults to ${localEnv:XDG_RUNTIME_DIR}/podman/podman.sock. Formerly published as 'poop'.",
+  "dependsOn": {
+    "./podman": {}
+  },
+  "containerEnv": {
+    "CONTAINER_HOST": "unix:///root/.poop/poop"
+  },
+  "mounts": [
+    {
+      "type": "bind",
+      "source": "${localEnv:XDG_RUNTIME_DIR}/podman/podman.sock",
+      "target": "/root/.poop/poop"
+    }
+  ],
+  "options": {}
+}
