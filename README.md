@@ -1,9 +1,10 @@
-# podman-dc-features
+# pbdc-features
 
 Open-source, **podman-native** Dev Container Features following the
-[containers.dev](https://containers.dev) specification. The name deliberately
-follows the spec naming (`dc-` prefix) and avoids the `devcontainers`
-tradename held by Microsoft/GitHub's organization.
+[containers.dev](https://containers.dev) specification. Part of the **pbdc**
+family (podman-based-devcontainers). The name deliberately uses the `pbdc-`
+prefix and avoids the `devcontainers` tradename held by Microsoft/GitHub's
+organization.
 
 Features target rootless podman end-to-end: no Docker daemon, no
 `docker-outside-of-docker`, no `ghcr.io` artifacts.
