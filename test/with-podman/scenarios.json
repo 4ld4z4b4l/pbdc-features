@@ -1,0 +1,15 @@
+{
+  "on_full_fedora": {
+    "image": "registry.fedoraproject.org/fedora:latest",
+    "features": {
+      "with-base": {},
+      "podman": {},
+      "podman-in-podman": {},
+      "poop": {},
+      "with-podman": {}
+    },
+    "containerEnv": {
+      "CONTAINER_HOST": "unix:///root/.poop/poop"
+    }
+  }
+}

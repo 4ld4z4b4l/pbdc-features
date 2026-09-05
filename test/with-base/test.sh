@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
-set -e
 
-test -f /usr/local/share/pbdc-features/with-base
+source dev-container-features-test-lib
+
+check "with-base marker" test -f /usr/local/share/pbdc-features/with-base
+
 PKG_MANAGER=$(cat /usr/local/share/pbdc-features/with-base)
 case "$PKG_MANAGER" in
-    dnf) command -v dnf >/dev/null ;;
-    microdnf) command -v microdnf >/dev/null ;;
-    *) exit 1 ;;
+    dnf) check "package manager 'dnf'" command -v dnf ;;
+    microdnf) check "package manager 'microdnf'" command -v microdnf ;;
+    *) check "package manager recognized" false ;;
 esac
 
-echo "[with-base] test passed: package manager '$PKG_MANAGER'."
+reportResults

@@ -1,0 +1,9 @@
+{
+  "on_full_fedora": {
+    "image": "registry.fedoraproject.org/fedora:latest",
+    "features": {
+      "with-base": {},
+      "podman": {}
+    }
+  }
+}

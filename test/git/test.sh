@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-set -e
 
-test -x "$(command -v git)"
-git --version >/dev/null
+source dev-container-features-test-lib
 
-echo "[git] test passed."
+check "git installed" command -v git
+check "git runs" git --version
+
+reportResults

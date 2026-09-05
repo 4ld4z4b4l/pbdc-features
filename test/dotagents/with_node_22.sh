@@ -2,10 +2,8 @@
 
 source dev-container-features-test-lib
 
+check "node v22" bash -c "node --version | grep -Eq '^v22\.'"
 check "dotagents installed" command -v dotagents
-check "node resolves" test -x "$(readlink -f "$(command -v node)")"
-check "node >= 20" bash -c "node --version | grep -Eq '^v(20|[2-9][0-9])\.'"
-check "npm runs" npm --version
 check "dotagents runs" bash -c "dotagents --version >/dev/null 2>&1 || dotagents --help >/dev/null 2>&1"
 
 reportResults

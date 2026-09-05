@@ -1,0 +1,13 @@
+{
+  "with_node_22": {
+    "image": "registry.fedoraproject.org/fedora-minimal:latest",
+    "features": {
+      "with-base": {},
+      "nvm": {},
+      "node": {
+        "version": "22"
+      },
+      "dotagents": {}
+    }
+  }
+}

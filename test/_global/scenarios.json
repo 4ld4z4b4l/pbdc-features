@@ -1,0 +1,22 @@
+{
+  "full_collection": {
+    "image": "registry.fedoraproject.org/fedora-minimal:latest",
+    "features": {
+      "with-base": {},
+      "podman": {},
+      "podman-in-podman": {},
+      "poop": {},
+      "with-podman": {},
+      "git": {},
+      "nvm": {},
+      "node": {},
+      "dotagents": {}
+    },
+    "containerEnv": {
+      "POOP_SOCKET": "/root/.poop/poop",
+      "CONTAINER_HOST": "unix:///root/.poop/poop",
+      "PODMAN_HOST": "unix:///root/.poop/poop",
+      "DOCKER_HOST": "unix:///root/.poop/poop"
+    }
+  }
+}
