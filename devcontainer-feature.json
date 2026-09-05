@@ -1,0 +1,5 @@
+{
+  "name": "podman-dc-features",
+  "description": "Podman-native Dev Container Features for rootless end-to-end workflows.",
+  "version": "0.1.0"
+}
