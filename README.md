@@ -51,15 +51,18 @@ problem with the features under development.
 
 - Base image: Fedora Minimal with Node, npm, `@devcontainers/cli`, jq, git,
   curl, tar, xz, and podman + `podman-docker` (the CLI's `docker` shim).
-- The host's rootless podman socket (`${XDG_RUNTIME_DIR}/podman/podman.sock`)
-  is bind-mounted at `/root/.poop/poop`; `DOCKER_HOST`, `CONTAINER_HOST`,
-  `PODMAN_HOST`, and `POOP_SOCKET` point at it, so `devcontainer features test`
-  builds and runs test containers on the host engine (podman-outside-of-podman).
+- The host's rootless podman socket is mounted at `/root/.poop/poop` **by this
+  machine's container configuration** — `~/.config/containers/containers.conf.d/40-podman.sock.conf`
+  declares it via `[containers] mounts`, so the host engine auto-mounts it into
+  every container it starts (no socket mount in `runArgs`). `DOCKER_HOST`,
+  `CONTAINER_HOST`, `PODMAN_HOST`, and `POOP_SOCKET` point at it, so
+  `devcontainer features test` builds and runs test containers on the host
+  engine (podman-outside-of-podman).
 - `devcontainer features test` bind-mounts its temp workspace and per-feature
   socket mounts as host paths, so the devcontainer mirrors host paths
-  (`/tmp`, `${HOME}`, `${XDG_RUNTIME_DIR}`) at identical locations and sets
-  `workspaceFolder` to the repo's host path. `XDG_RUNTIME_DIR` is forwarded to
-  the container so feature mounts using `${localEnv:XDG_RUNTIME_DIR}` resolve.
+  (`/tmp`, `${HOME}`) at identical locations and sets `workspaceFolder` to the
+  repo's host path. `XDG_RUNTIME_DIR` is forwarded to the container so feature
+  mounts using `${localEnv:XDG_RUNTIME_DIR}` resolve.
   The repo is expected under `${HOME}/code/github/<owner>/<repo>`.
 - Scripts:
   - `scripts/check-manifests.sh` — parses every feature manifest as JSON.

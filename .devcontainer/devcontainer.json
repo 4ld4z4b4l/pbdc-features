@@ -12,11 +12,7 @@
     "--mount",
     "type=bind,source=/tmp,target=/tmp",
     "--mount",
-    "type=bind,source=${localEnv:HOME},target=${localEnv:HOME}",
-    "--mount",
-    "type=bind,source=${localEnv:XDG_RUNTIME_DIR},target=${localEnv:XDG_RUNTIME_DIR}",
-    "--mount",
-    "type=bind,source=${localEnv:XDG_RUNTIME_DIR}/podman/podman.sock,target=/root/.poop/poop"
+    "type=bind,source=${localEnv:HOME},target=${localEnv:HOME}"
   ],
   "containerEnv": {
     "XDG_RUNTIME_DIR": "${localEnv:XDG_RUNTIME_DIR}",
