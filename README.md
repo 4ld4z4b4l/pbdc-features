@@ -26,14 +26,46 @@ A Dev Container Features **collection**:
 | `src/<feature>` | Purpose |
 | --- | --- |
 | `with-base` | Base-image conformance gate: rpm package manager (`dnf`/`microdnf`) required; installs nothing |
+| `git` | Installs git system-wide |
+| `nvm` | Installs nvm into shared `/usr/local/share/nvm`; exposed to all users via `/etc/profile.d` |
+| `node` | Installs a Node.js version via nvm (option `version`, default `lts`); bin symlinks in `/usr/local/bin` |
 | `podman` | Installs the podman runtime |
 | `podman-in-podman` | Nested rootless podman: storage volumes + UID ranges as in `quay.io/podman/stable` |
 | `poop` | Podman-outside-of-podman: host socket at `/root/.poop/poop`, exposed as `CONTAINER_HOST` |
 | `with-podman` | Runtime mode switch (pip/poop) via the `podman-mode` launcher; depends on pip + poop |
-| `dotagents` | Installs the `@sentry/dotagents` CLI (shared coding-agent tooling; needs Node >= 20) |
+| `dotagents` | Installs the `@sentry/dotagents` CLI (shared coding-agent tooling; needs Node >= 20; git optional at runtime) |
+
+Everything a feature installs lands in system/shared paths (`/usr/bin`,
+`/usr/local/bin`, `/usr/local/share/...`) so it is available to the rootless
+container user, not just root.
 
 Intra-collection dependencies use relative refs (`./with-base`, `./podman`, ...);
 the collection is not published to any OCI registry.
+
+## Development container
+
+`.devcontainer/` provides a workspace for authoring these features. It
+**uses no Dev Container Features** — the tooling it needs is built into the
+image and the host socket is mounted directly, avoiding a chicken-and-egg
+problem with the features under development.
+
+- Base image: Fedora Minimal with Node, npm, `@devcontainers/cli`, jq, git,
+  curl, tar, xz, and podman + `podman-docker` (the CLI's `docker` shim).
+- The host's rootless podman socket (`${XDG_RUNTIME_DIR}/podman/podman.sock`)
+  is bind-mounted at `/root/.poop/poop`; `DOCKER_HOST`, `CONTAINER_HOST`,
+  `PODMAN_HOST`, and `POOP_SOCKET` point at it, so `devcontainer features test`
+  builds and runs test containers on the host engine (podman-outside-of-podman).
+- `devcontainer features test` bind-mounts its temp workspace and per-feature
+  socket mounts as host paths, so the devcontainer mirrors host paths
+  (`/tmp`, `${HOME}`, `${XDG_RUNTIME_DIR}`) at identical locations and sets
+  `workspaceFolder` to the repo's host path. `XDG_RUNTIME_DIR` is forwarded to
+  the container so feature mounts using `${localEnv:XDG_RUNTIME_DIR}` resolve.
+  The repo is expected under `${HOME}/code/github/<owner>/<repo>`.
+- Scripts:
+  - `scripts/check-manifests.sh` — parses every feature manifest as JSON.
+  - `scripts/test-features.sh` — runs `features test` for every feature with
+    its full dependency chain against `fedora-minimal:latest`
+    (override with `BASE_IMAGE`).
 
 ## Status
 

@@ -1,26 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
-if [ ! -f /usr/local/share/pbdc-features/with-base ]; then
-    echo "[dotagents] ERROR: with-base must run first." >&2
-    exit 1
-fi
-PKG_MANAGER=$(cat /usr/local/share/pbdc-features/with-base)
-
-case "$PKG_MANAGER" in
-    dnf)
-        dnf install -y nodejs npm git
-        dnf clean all
-        ;;
-    microdnf)
-        microdnf install -y nodejs npm git
-        microdnf clean all
-        ;;
-    *)
-        echo "[dotagents] ERROR: unsupported package manager '$PKG_MANAGER'." >&2
-        exit 1
-        ;;
-esac
+command -v node >/dev/null 2>&1 || { echo "[dotagents] ERROR: node feature must run first." >&2; exit 1; }
+command -v npm >/dev/null 2>&1 || { echo "[dotagents] ERROR: npm is missing; the node feature must provide it." >&2; exit 1; }
 
 NODE_MAJOR=$(node --version | sed 's/^v//' | cut -d. -f1)
 if [ "$NODE_MAJOR" -lt 20 ]; then

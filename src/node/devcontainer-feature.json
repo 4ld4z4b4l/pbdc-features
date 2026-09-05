@@ -1,0 +1,21 @@
+{
+  "id": "node",
+  "version": "0.1.0",
+  "name": "Node.js",
+  "description": "Installs a particular Node.js version via nvm into /usr/local/share/nvm and symlinks its binaries into /usr/local/bin for every user.",
+  "dependsOn": {
+    "./nvm": {}
+  },
+  "options": {
+    "version": {
+      "type": "string",
+      "default": "lts",
+      "description": "Node.js version to install. Any version string nvm accepts (e.g. 22, 20.17.0), or 'lts' for the latest LTS.",
+      "proposals": [
+        "lts",
+        "22",
+        "20"
+      ]
+    }
+  }
+}

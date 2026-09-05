@@ -1,0 +1,10 @@
+{
+  "id": "nvm",
+  "version": "0.1.0",
+  "name": "nvm",
+  "description": "Installs nvm (Node Version Manager) into the shared directory /usr/local/share/nvm and exposes it to every user via /etc/profile.d, rootless users included.",
+  "dependsOn": {
+    "./with-base": {}
+  },
+  "options": {}
+}

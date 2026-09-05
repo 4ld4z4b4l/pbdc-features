@@ -24,9 +24,7 @@ driver = "overlay"
 [storage.options.overlay]
 mount_program = "/usr/bin/fuse-overlayfs"
 mountopt = "nodev,fsync=0"
-
-[storage.options.overlay.additionalimagestores]
-path = "/var/lib/shared"
+additionalimage_stores = ["/var/lib/shared"]
 EOF
 
 install -d /home/podman/.config/containers

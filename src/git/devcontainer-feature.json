@@ -1,0 +1,10 @@
+{
+  "id": "git",
+  "version": "0.1.0",
+  "name": "Git",
+  "description": "Installs git using the base image's package manager; the binary is system-wide and available to every user, rootless included.",
+  "dependsOn": {
+    "./with-base": {}
+  },
+  "options": {}
+}

@@ -1,0 +1,28 @@
+{
+  "name": "pbdc-features",
+  "build": {
+    "dockerfile": "Containerfile",
+    "context": "."
+  },
+  "workspaceFolder": "${localEnv:HOME}/code/github/4ld4z4b4l/pbdc-features",
+  "containerUser": "root",
+  "remoteUser": "root",
+  "runArgs": [
+    "--security-opt=label=disable",
+    "--mount",
+    "type=bind,source=/tmp,target=/tmp",
+    "--mount",
+    "type=bind,source=${localEnv:HOME},target=${localEnv:HOME}",
+    "--mount",
+    "type=bind,source=${localEnv:XDG_RUNTIME_DIR},target=${localEnv:XDG_RUNTIME_DIR}",
+    "--mount",
+    "type=bind,source=${localEnv:XDG_RUNTIME_DIR}/podman/podman.sock,target=/root/.poop/poop"
+  ],
+  "containerEnv": {
+    "XDG_RUNTIME_DIR": "${localEnv:XDG_RUNTIME_DIR}",
+    "POOP_SOCKET": "/root/.poop/poop",
+    "CONTAINER_HOST": "unix:///root/.poop/poop",
+    "PODMAN_HOST": "unix:///root/.poop/poop",
+    "DOCKER_HOST": "unix:///root/.poop/poop"
+  }
+}

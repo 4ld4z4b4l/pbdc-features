@@ -1,0 +1,17 @@
+FROM fedora-minimal:latest
+
+RUN dnf install -y \
+        bash \
+        ca-certificates \
+        curl \
+        git \
+        jq \
+        nodejs \
+        npm \
+        podman \
+        podman-docker \
+        tar \
+        xz \
+    && dnf clean all
+
+RUN npm install -g @devcontainers/cli

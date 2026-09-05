@@ -2,9 +2,9 @@
   "id": "dotagents",
   "version": "0.1.0",
   "name": "dotagents",
-  "description": "Installs the dotagents CLI (@sentry/dotagents) for managing shared coding-agent tooling across agents. Requires Node.js >= 20, npm, and git (for cloning skill/plugin sources).",
+  "description": "Installs the dotagents CLI (@sentry/dotagents) for managing shared coding-agent tooling across agents. Depends on the node feature; requires Node.js >= 20. Git is optional at runtime (only used for explicit git: sources).",
   "dependsOn": {
-    "./with-base": {}
+    "./node": {}
   },
   "options": {}
 }
