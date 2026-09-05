@@ -37,10 +37,12 @@ fi
 
 for IMAGE in "${PINP_IMAGES[@]}"; do
     echo "[pinp-up] pre-pulling $IMAGE"
-    setpriv --reuid="$ENGINE_UID" --regid="$ENGINE_UID" --init-groups \
-        env HOME="$ENGINE_HOME" XDG_RUNTIME_DIR="$RUNTIME_DIR" \
-        XDG_CONFIG_HOME="$ENGINE_HOME/.config" XDG_DATA_HOME="$ENGINE_HOME/.local/share" \
-        podman pull "$IMAGE" >/dev/null 2>&1
+    if ! timeout 180 setpriv --reuid="$ENGINE_UID" --regid="$ENGINE_UID" --init-groups \
+            env HOME="$ENGINE_HOME" XDG_RUNTIME_DIR="$RUNTIME_DIR" \
+            XDG_CONFIG_HOME="$ENGINE_HOME/.config" XDG_DATA_HOME="$ENGINE_HOME/.local/share" \
+            podman pull "$IMAGE" >/dev/null 2>&1; then
+        echo "[pinp-up] WARNING: pre-pull failed for $IMAGE (continuing)"
+    fi
 done
 
 echo "PINP_ENGINE_HOME=$ENGINE_HOME"

@@ -16,21 +16,24 @@ jobs:
       image: registry.fedoraproject.org/fedora:46
       options: --privileged
     steps:
-      - name: "Install build tools"
+      - name: "Install tools"
         run: |
           set -euo pipefail
-          dnf install -y --quiet podman git
+          dnf install -y --quiet podman fuse-overlayfs git nodejs npm util-linux
+          npm install -g --quiet @devcontainers/cli
 
       - uses: actions/checkout@v4
 
-      - name: "Build authoring devcontainer image"
+      - name: "Bootstrap rootless podman engine (uid 1000) + docker shim"
         run: |
           set -euo pipefail
-          podman build -t pbdc-features:authoring -f .devcontainer/Containerfile .
+          getent passwd 1000 || useradd -u 1000 -m -s /bin/bash builder
+          grep -q "^builder:" /etc/subuid || echo "builder:100000:131072" >> /etc/subuid
+          grep -q "^builder:" /etc/subgid || echo "builder:100000:131072" >> /etc/subgid
+          chmod u+s /usr/bin/newuidmap /usr/bin/newgidmap
+          mkdir -p /run/user/1000 && chown 1000:1000 /run/user/1000 && chmod 700 /run/user/1000
+          [ -e /dev/fuse ] || mknod /dev/fuse c 10 229
+          install -m 0755 .devcontainer/docker /usr/local/bin/docker
 
-      - name: "Run full feature test suite inside the authoring devcontainer"
-        run: |
-          set -euo pipefail
-          podman run --rm --privileged \
-            -v "$PWD":/repo:ro -w /repo \
-            pbdc-features:authoring bash -c 'bash scripts/test-features.sh'
+      - name: "Run full feature test suite against the rootless podman engine"
+        run: bash scripts/test-features.sh
