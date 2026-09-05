@@ -4,6 +4,12 @@ Agent guidance for this repository, written to the
 [AGENTS.md specification](https://agents.md) and its recommended structure.
 That conformance is this file's first and foremost rule.
 
+## Agent files
+
+Only standardized AI files may be used in this repository (`AGENTS.md`).
+Do not add non-standardized files (`CONTEXT.md`, `CLAUDE.md`, `MEMORY.md`,
+`SKILLS.md`) until they are standardized.
+
 ## Project overview
 
 `pbdc-features` is a collection of podman-native Dev Container Features
