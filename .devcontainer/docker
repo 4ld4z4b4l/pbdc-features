@@ -1,0 +1,6 @@
+#!/bin/sh
+if [ "${1:-}" = "buildx" ]; then
+    echo "docker: 'buildx' is not a docker command." >&2
+    exit 1
+fi
+exec /usr/bin/podman "$@"

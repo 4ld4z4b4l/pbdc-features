@@ -1,4 +1,4 @@
-FROM fedora-minimal:latest
+FROM registry.fedoraproject.org/fedora:46
 
 RUN dnf install -y \
         bash \
@@ -9,9 +9,18 @@ RUN dnf install -y \
         nodejs \
         npm \
         podman \
-        podman-docker \
         tar \
+        util-linux \
         xz \
     && dnf clean all
 
 RUN npm install -g @devcontainers/cli
+
+RUN mkdir -p /run/user/1000 && chmod 700 /run/user/1000 \
+    && chmod u+s /usr/bin/newuidmap /usr/bin/newgidmap \
+    && (getent passwd 1000 || useradd -u 1000 -m -s /bin/bash podman) \
+    && (grep -q "^podman:.*1000:100000" /etc/subuid || echo "podman:100000:65536" >> /etc/subuid) \
+    && (grep -q "^podman:.*1000:100000" /etc/subgid || echo "podman:100000:65536" >> /etc/subgid)
+
+COPY .devcontainer/docker /usr/local/bin/docker
+RUN chmod 755 /usr/local/bin/docker

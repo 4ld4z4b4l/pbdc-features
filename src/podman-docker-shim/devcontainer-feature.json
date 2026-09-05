@@ -1,0 +1,10 @@
+{
+  "id": "podman-docker-shim",
+  "version": "0.1.0",
+  "name": "Podman Docker shim",
+  "description": "Minimal docker->podman compatibility shim for the Dev Container CLI and other docker-compatible tooling. Installs a single /usr/local/bin/docker passthrough that execs podman and refuses buildx, so builds use plain podman over the configured DOCKER_HOST.",
+  "dependsOn": {
+    "./podman": {}
+  },
+  "options": {}
+}

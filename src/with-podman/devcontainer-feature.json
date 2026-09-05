@@ -4,6 +4,7 @@
   "name": "withPodman",
   "description": "Runtime mode switch between podman-in-podman (pip) and podman-outside-of-podman (poop). Depends on both engines and ships the podman-mode launcher to switch modes at runtime.",
   "dependsOn": {
+    "./podman-docker-shim": {},
     "./podman-in-podman": {},
     "./podman-outside-of-podman": {}
   },

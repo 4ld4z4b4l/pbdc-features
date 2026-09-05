@@ -32,7 +32,8 @@ A Dev Container Features **collection**:
 | `podman` | Installs the podman runtime |
 | `podman-in-podman` | Nested rootless podman: storage volumes + UID ranges as in `quay.io/podman/stable` |
 | `podman-outside-of-podman` | Podman-outside-of-podman: host socket at `/root/.poop/poop`, exposed as `CONTAINER_HOST` (legacy alias: `poop`) |
-| `with-podman` | Runtime mode switch (pip/poop) via the `podman-mode` launcher; depends on pip + podman-outside-of-podman |
+| `podman-docker-shim` | Minimal `docker`->podman shim: a `/usr/local/bin/docker` passthrough that execs podman and refuses `buildx` (needed by the Dev Container CLI) |
+| `with-podman` | Runtime mode switch (pip/poop) via the `podman-mode` launcher; depends on the docker shim + both engines |
 | `dotagents` | Installs the `@sentry/dotagents` CLI (shared coding-agent tooling; needs Node >= 20; git optional at runtime) |
 
 Everything a feature installs lands in system/shared paths (`/usr/bin`,

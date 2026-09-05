@@ -4,6 +4,7 @@
     "features": {
       "with-base": {},
       "podman": {},
+      "podman-docker-shim": {},
       "podman-in-podman": {},
       "podman-outside-of-podman": {},
       "with-podman": {}
