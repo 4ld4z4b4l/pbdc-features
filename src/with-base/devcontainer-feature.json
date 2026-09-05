@@ -1,0 +1,7 @@
+{
+  "id": "with-base",
+  "version": "0.1.0",
+  "name": "with-base",
+  "description": "Base-image conformance gate: requires an rpm-based image with dnf or microdnf. Installs nothing; fails the build if the base image is not conformant. Every other feature in this collection depends on it.",
+  "options": {}
+}

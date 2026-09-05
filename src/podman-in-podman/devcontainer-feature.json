@@ -1,0 +1,22 @@
+{
+  "id": "podman-in-podman",
+  "version": "0.1.0",
+  "name": "Podman in Podman",
+  "description": "Enables nested rootless podman (podman-in-podman): storage volumes and UID ranges mirroring quay.io/podman/stable. Requires /dev/fuse and --security-opt label=disable at runtime.",
+  "dependsOn": {
+    "./podman": {}
+  },
+  "mounts": [
+    {
+      "type": "volume",
+      "source": "pip-var-lib-containers-${devcontainerId}",
+      "target": "/var/lib/containers"
+    },
+    {
+      "type": "volume",
+      "source": "pip-home-podman-containers-${devcontainerId}",
+      "target": "/home/podman/.local/share/containers"
+    }
+  ],
+  "options": {}
+}

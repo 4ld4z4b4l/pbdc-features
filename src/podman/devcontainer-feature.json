@@ -1,0 +1,10 @@
+{
+  "id": "podman",
+  "version": "0.1.0",
+  "name": "Podman",
+  "description": "Installs the podman runtime using the base image's package manager.",
+  "dependsOn": {
+    "./with-base": {}
+  },
+  "options": {}
+}
