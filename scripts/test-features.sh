@@ -23,7 +23,6 @@ if [ -z "${DOCKER_HOST:-}" ]; then
             podman system service --time=0 "unix://$PINP_SOCKET_DIR/podman.sock"
     ) >/var/log/pbdc-pinp-service.log 2>&1 < /dev/null &
     PINP_PID=$!
-    trap 'kill "$PINP_PID" 2>/dev/null || true' EXIT
 
     echo "=== pinp: waiting for $PINP_SOCKET"
     for _ in $(seq 1 60); do
@@ -40,6 +39,33 @@ if [ -z "${DOCKER_HOST:-}" ]; then
     export XDG_RUNTIME_DIR="$PINP_RUNTIME_DIR"
     echo "DOCKER_HOST=$DOCKER_HOST"
     echo "XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR"
+
+    declare -A PINP_REF
+    CUR_TAG=""
+    while IFS= read -r LINE; do
+        case "$LINE" in
+            PINP_IMAGE_TAG=*) CUR_TAG="${LINE#PINP_IMAGE_TAG=}" ;;
+            PINP_IMAGE_REF=*) [ -n "$CUR_TAG" ] && PINP_REF["$CUR_TAG"]="${LINE#PINP_IMAGE_REF=}" ;;
+        esac
+    done <<< "$PINP_ENV"
+
+    restore_image_refs() {
+        for TAG in "${!PINP_REF[@]}"; do
+            for FILE in test/*/scenarios.json; do
+                sed -i "s|${PINP_REF[$TAG]}|$TAG|g" "$FILE"
+            done
+        done
+    }
+    trap 'kill "$PINP_PID" 2>/dev/null || true; restore_image_refs' EXIT
+
+    for TAG in "${!PINP_REF[@]}"; do
+        echo "=== pinp: digest ref $TAG -> ${PINP_REF[$TAG]}"
+        for FILE in test/*/scenarios.json; do
+            sed -i "s|$TAG|${PINP_REF[$TAG]}|g" "$FILE"
+        done
+        [ "$TAG" = "registry.fedoraproject.org/fedora-minimal:latest" ] && BASE_IMAGE="${PINP_REF[$TAG]}"
+    done
+    echo "=== pinp: base image = $BASE_IMAGE"
 else
     echo "DOCKER_HOST=$DOCKER_HOST (external, no pinp boot)"
 fi
