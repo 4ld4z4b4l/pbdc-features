@@ -43,6 +43,17 @@ for IMAGE in "${PINP_IMAGES[@]}"; do
             XDG_CONFIG_HOME="$ENGINE_HOME/.config" XDG_DATA_HOME="$ENGINE_HOME/.local/share" \
             podman pull "$IMAGE" >/dev/null 2>&1; then
         echo "[pinp-up] WARNING: pre-pull failed for $IMAGE (continuing)"
+        continue
+    fi
+    if [ "$(printf '%s' "$IMAGE" | tr -cd '/' | wc -c)" -eq 1 ]; then
+        TAG="docker.io/${IMAGE}"
+        echo "[pinp-up] mirror-tagging $IMAGE as $TAG"
+        if ! setpriv --reuid="$ENGINE_UID" --regid="$ENGINE_UID" --init-groups \
+                env HOME="$ENGINE_HOME" XDG_RUNTIME_DIR="$RUNTIME_DIR" \
+                XDG_CONFIG_HOME="$ENGINE_HOME/.config" XDG_DATA_HOME="$ENGINE_HOME/.local/share" \
+                podman tag "$IMAGE" "$TAG" >/dev/null 2>&1; then
+            echo "[pinp-up] WARNING: mirror-tag failed for $TAG (continuing)"
+        fi
     fi
 done
 
