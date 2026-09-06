@@ -27,6 +27,8 @@ jobs:
       - name: "Bootstrap rootless podman engine (uid 1000) + docker shim"
         run: |
           set -euo pipefail
+          dnf install -y --quiet fuse-overlayfs
+          printf '[storage]\ndriver = "fuse-overlayfs"\n' > /etc/containers/storage.conf
           getent passwd 1000 || useradd -u 1000 -m -s /bin/bash builder
           grep -q "^builder:" /etc/subuid || echo "builder:100000:131072" >> /etc/subuid
           grep -q "^builder:" /etc/subgid || echo "builder:100000:131072" >> /etc/subgid
