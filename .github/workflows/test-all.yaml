@@ -27,8 +27,8 @@ jobs:
       - name: "Bootstrap rootless podman engine (uid 1000) + docker shim"
         run: |
           set -euo pipefail
-          dnf install -y --quiet fuse-overlayfs
-          printf '[storage]\ndriver = "fuse-overlayfs"\n' > /etc/containers/storage.conf
+          mkdir -p /etc/containers/containers.conf.d
+          printf '[engine]\nimage_copy_tmp_dir = "storage"\n' > /etc/containers/containers.conf.d/ci.conf
           getent passwd 1000 || useradd -u 1000 -m -s /bin/bash builder
           grep -q "^builder:" /etc/subuid || echo "builder:100000:131072" >> /etc/subuid
           grep -q "^builder:" /etc/subgid || echo "builder:100000:131072" >> /etc/subgid
@@ -38,4 +38,6 @@ jobs:
           install -m 0755 .devcontainer/docker /usr/local/bin/docker
 
       - name: "Run full feature test suite against the rootless podman engine"
+        env:
+          PINP_ENGINE_HOME: "${{ github.workspace }}/pinp-home"
         run: bash scripts/test-features.sh

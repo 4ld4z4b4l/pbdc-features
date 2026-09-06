@@ -28,7 +28,8 @@ for FILE in /etc/subuid /etc/subgid; do
     fi
 done
 
-mkdir -p "$SOCKET_DIR" "$ENGINE_HOME/.config" "$ENGINE_HOME/.local/share"
+mkdir -p "$SOCKET_DIR" "$ENGINE_HOME/.config" "$ENGINE_HOME/.local/share" \
+    "$ENGINE_HOME/.local/share/containers/storage/tmp"
 chown -R "${ENGINE_UID}:${ENGINE_UID}" "$ENGINE_HOME" "$RUNTIME_DIR"
 
 if [ -z "${PINP_IMAGES+x}" ]; then

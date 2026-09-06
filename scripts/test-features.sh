@@ -8,7 +8,7 @@ BASE_IMAGE="${BASE_IMAGE:-registry.fedoraproject.org/fedora-minimal:latest}"
 
 if [ -z "${DOCKER_HOST:-}" ]; then
     export PINP_ENGINE_UID=1000
-    PINP_HOME="/var/lib/pbdc-pinp/home"
+    PINP_HOME="${PINP_ENGINE_HOME:-/var/lib/pbdc-pinp/home}"
 
     echo "=== pinp: rootless engine for uid $PINP_ENGINE_UID ==="
     PINP_ENV="$(bash scripts/pinp-up.sh)"
